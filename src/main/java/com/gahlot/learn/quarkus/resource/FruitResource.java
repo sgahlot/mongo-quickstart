@@ -37,9 +37,4 @@ public class FruitResource {
         return getFruits();
     }
 
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello() {
-        return "Hello RESTEasy";
-    }
 }

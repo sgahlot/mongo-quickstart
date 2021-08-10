@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: List
+items:
+  - kind: Deployment
+    apiVersion: apps/v1
+    metadata:
+      name: mongo-quickstart
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          name: mongo-quickstart
+      template:
+        metadata:
+          labels:
+            name: mongo-quickstart
+        spec:
+          containers:
+            - name: mongo-quickstart
+              image: quay.io/sgahlot/mongo-quickstart:1.1.0-SNAPSHOT
+              imagePullPolicy: Always
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: mongo-quickstart
+      labels:
+        name: mongo-quickstart
+    spec:
+      ports:
+        - port: 8080
+          protocol: TCP
+          targetPort: 8080
+      selector:
+        name: mongo-quickstart
+  - kind: Route
+    apiVersion: route.openshift.io/v1
+    metadata:
+      name: mongo-quickstart
+      labels:
+        name: mongo-quickstart
+    spec:
+      port:
+        targetPort: 8080
+      to:
+        kind: Service
+        name: mongo-quickstart
