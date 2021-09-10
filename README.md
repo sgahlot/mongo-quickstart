@@ -29,6 +29,27 @@ If you want to build an _über-jar_, execute the following command:
 
 The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
 
+## Push image to quay.io and deploy it on OpenShift
+
+To deploy the image to quay.io:
+```shell script
+mvn clean package -DskipTests -Dquarkus.container-image.push=true
+```
+
+Following properties (in application.properties) define the image settings: 
+```shell script
+quarkus.container-image.registry
+quarkus.container-image.group
+quarkus.container-image.name
+quarkus.container-image.tag
+```
+
+You can deploy the app (from quay.io) in OpenShift using following command:
+```shell
+oc apply -f target/kubernetes/kubernetes.yml
+```
+Above yml file is auto-generated with the property values defined previously.
+
 ## Creating a native executable
 
 You can create a native executable using: 
